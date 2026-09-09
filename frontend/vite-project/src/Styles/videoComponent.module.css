@@ -1,0 +1,530 @@
+
+/* =========================================================
+   VIDEO MEET - DARK THEME
+   Paste this entire file into:
+   videoComponent.module.css
+   ========================================================= */
+
+/* ---------- PAGE ---------- */
+
+:global(html),
+:global(body),
+:global(#root) {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    background: #050a2b;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+:global(body) {
+    overflow-x: hidden;
+}
+
+/* Make normal MUI text fields readable on the dark background */
+:global(.MuiInputBase-root) {
+    color: #ffffff !important;
+}
+
+:global(.MuiInputBase-input) {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    font-size: 18px !important;
+}
+
+:global(.MuiInputLabel-root) {
+    color: #dbeafe !important;
+    font-size: 17px !important;
+}
+
+:global(.MuiInputLabel-root.Mui-focused) {
+    color: #60a5fa !important;
+}
+
+:global(.MuiOutlinedInput-root) {
+    background: #172033 !important;
+    border-radius: 12px !important;
+}
+
+:global(.MuiOutlinedInput-notchedOutline) {
+    border-color: #64748b !important;
+    border-width: 1px !important;
+}
+
+:global(.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline) {
+    border-color: #93c5fd !important;
+}
+
+:global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+    border-color: #60a5fa !important;
+    border-width: 2px !important;
+}
+
+/* Floating label gets a small background so it never looks cut through */
+:global(.MuiInputLabel-root) {
+    background: #172033;
+    padding: 0 6px;
+    margin-left: -4px;
+}
+
+/* ---------- LOBBY PAGE ---------- */
+/* The JSX lobby has no custom class, so these selectors style it
+   without changing your JSX/functionality. */
+
+:global(body > #root > div > div:first-child) {
+    color: #ffffff;
+}
+
+
+
+/* Lobby username field */
+:global(body .MuiTextField-root) {
+    margin: 8px;
+}
+
+/* Connect button */
+:global(.MuiButton-contained) {
+    /* background: #1976d2 !important;
+    color: #ffffff !important; */
+    font-weight: 700 !important;
+    border-radius: 10px !important;
+    min-height: 48px;
+    padding: 10px 26px !important;
+    text-transform: uppercase;
+}
+
+:global(.MuiButton-contained:hover) {
+    background: #1565c0 !important;
+}
+
+/* Lobby video */
+:global(video) {
+    background: #000000;
+}
+
+/* ---------- MAIN MEETING AREA ---------- */
+
+.meetVideoContainer {
+    width: 100vw;
+    height: 100vh;
+    min-height: 600px;
+    background: #050a2b;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ---------- LOCAL VIDEO ---------- */
+
+.meetUserVideo {
+    position: absolute;
+    left: 22px;
+    bottom: 92px;
+    width: 340px;
+    height: 195px;
+    object-fit: cover;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: #000000;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
+}
+
+/* ---------- REMOTE VIDEOS ---------- */
+
+.conferenceView {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    padding: 22px;
+    width: calc(100% - 420px);
+    height: calc(100vh - 120px);
+    box-sizing: border-box;
+    align-content: flex-start;
+}
+
+.remoteVideo {
+    width: 320px;
+    height: 190px;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #000000;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.remoteVideo video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ---------- BOTTOM CONTROLS ---------- */
+
+.buttonContainers {
+    position: absolute;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    z-index: 20;
+    padding: 8px 14px;
+    border-radius: 18px;
+    background: rgba(8, 14, 45, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+}
+
+.buttonContainers :global(.MuiIconButton-root) {
+    color: #ffffff !important;
+    width: 54px;
+    height: 54px;
+}
+
+.buttonContainers :global(.MuiSvgIcon-root) {
+    font-size: 30px;
+}
+
+.buttonContainers :global(.MuiIconButton-root:hover) {
+    background: rgba(255, 255, 255, 0.10);
+}
+
+/* ---------- CHAT PANEL ---------- */
+
+.chatRoom {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(430px, 36vw);
+    height: 100%;
+    z-index: 30;
+    box-sizing: border-box;
+    padding: 26px 24px;
+    background: #101827;
+    border-left: 1px solid rgba(255, 255, 255, 0.10);
+    box-shadow: -15px 0 35px rgba(0, 0, 0, 0.28);
+}
+
+.chatContainer {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    color: #ffffff;
+}
+
+.chatContainer h1 {
+    margin: 0 0 16px;
+    color: #ffffff;
+    font-size: 34px;
+    font-weight: 700;
+}
+
+.chattingDisplay {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 10px 4px 18px;
+    color: #ffffff;
+}
+
+.chattingDisplay p {
+    color: #f8fafc !important;
+    font-size: 16px;
+    line-height: 1.45;
+}
+
+.chattingDisplay p:first-child {
+    color: #93c5fd !important;
+}
+
+/* ---------- CHAT INPUT AREA ---------- */
+
+.chattingArea {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 16px;
+}
+
+.chattingArea :global(.MuiTextField-root) {
+    flex: 1;
+    margin: 0 !important;
+}
+
+.chattingArea :global(.MuiOutlinedInput-root) {
+    min-height: 58px;
+    background: #1b2638 !important;
+}
+
+.chattingArea :global(.MuiInputBase-input) {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    font-size: 18px !important;
+}
+
+.chattingArea :global(.MuiInputLabel-root) {
+    color: #e2e8f0 !important;
+    background: #1b2638;
+    font-size: 17px !important;
+}
+
+.chattingArea :global(.MuiInputLabel-root.Mui-focused) {
+    color: #60a5fa !important;
+}
+
+.chattingArea :global(.MuiOutlinedInput-notchedOutline) {
+    border-color: #64748b !important;
+}
+
+.chattingArea :global(.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline) {
+    border-color: #93c5fd !important;
+}
+
+.chattingArea :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+    border-color: #60a5fa !important;
+}
+
+.chattingArea :global(.MuiButton-root) {
+    flex: 0 0 auto;
+    min-width: 92px;
+    min-height: 58px;
+    font-size: 16px !important;
+}
+
+/* ---------- CHAT SCROLLBAR ---------- */
+
+.chattingDisplay::-webkit-scrollbar {
+    width: 7px;
+}
+
+.chattingDisplay::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chattingDisplay::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 10px;
+}
+
+/* ---------- RESPONSIVE ---------- */
+
+@media (max-width: 900px) {
+    .chatRoom {
+        width: 46vw;
+    }
+
+    .conferenceView {
+        width: calc(100% - 360px);
+    }
+
+    .meetUserVideo {
+        width: 280px;
+        height: 165px;
+    }
+}
+
+@media (max-width: 700px) {
+    .chatRoom {
+        width: 100%;
+        height: 55%;
+        top: auto;
+        bottom: 0;
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.10);
+    }
+
+    .conferenceView {
+        width: 100%;
+        height: calc(100vh - 100px);
+    }
+
+    .meetUserVideo {
+        width: 190px;
+        height: 120px;
+        left: 12px;
+        bottom: 82px;
+    }
+
+    .buttonContainers {
+        bottom: 12px;
+    }
+
+    .buttonContainers :global(.MuiIconButton-root) {
+        width: 46px;
+        height: 46px;
+    }
+
+    .chattingArea {
+        gap: 8px;
+    }
+
+    .chattingArea :global(.MuiButton-root) {
+        min-width: 78px;
+    }
+}
+
+
+.lobbyContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    gap: 28px;
+    padding: 20px;
+    background:
+        radial-gradient(circle at 75% 20%, rgba(96, 165, 250, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 20% 85%, rgba(124, 58, 237, 0.14) 0%, transparent 50%),
+        #050a2b;
+    text-align: center;
+}
+
+.lobbyContainer h2 {
+    margin: 0 !important;
+}
+
+.lobbyForm {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.lobbyForm :global(.MuiButton-contained) {
+    height: 56px;
+}
+
+.lobbyVideoPreview {
+    width: 480px;
+    max-width: 90vw;
+    height: 320px;
+    object-fit: cover;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 20px 55px rgba(0, 0, 0, 0.5);
+    background: #000000;
+}
+
+@media (max-width: 600px) {
+    .lobbyVideoPreview {
+        height: 240px;
+    }
+
+    .lobbyForm {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .lobbyForm :global(.MuiTextField-root),
+    .lobbyForm :global(.MuiButton-contained) {
+        width: 100%;
+        max-width: 320px;
+    }
+}
+
+/* =========================================================
+   LOBBY PAGE — PREMIUM POLISH
+   Add this block to the end of videoComponent.module.css
+   ========================================================= */
+
+.lobbyContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    gap: 20px;
+    padding: 20px;
+    position: relative;
+    background:
+        radial-gradient(circle at 75% 20%, rgba(96, 165, 250, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 20% 85%, rgba(124, 58, 237, 0.14) 0%, transparent 50%),
+        #050a2b;
+    text-align: center;
+}
+
+.lobbyBrand {
+    position: absolute;
+    top: 28px;
+    left: 32px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #ffffff, #c084fc);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: -0.02em;
+}
+
+.lobbyContainer h2 {
+    margin: 0 !important;
+    font-size: clamp(32px, 4vw, 52px) !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #ffffff, #d8b4fe);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.lobbyForm {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 8px;
+}
+
+.lobbyForm :global(.MuiButton-contained) {
+    height: 56px;
+    background: linear-gradient(135deg, #a855f7, #7c3aed) !important;
+    font-weight: 600 !important;
+    border-radius: 10px !important;
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.35);
+    transition: transform 0.2s ease;
+}
+
+.lobbyForm :global(.MuiButton-contained:hover) {
+    transform: translateY(-2px);
+}
+
+.lobbyForm :global(.MuiOutlinedInput-root) {
+    height: 56px;
+    border-radius: 10px !important;
+}
+
+.lobbyVideoPreview {
+    width: 480px;
+    max-width: 90vw;
+    height: 320px;
+    object-fit: cover;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 20px 55px rgba(0, 0, 0, 0.5);
+    background: #000000;
+    margin-top: 8px;
+}
+
+@media (max-width: 600px) {
+    .lobbyVideoPreview {
+        height: 240px;
+    }
+
+    .lobbyForm {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .lobbyForm :global(.MuiTextField-root),
+    .lobbyForm :global(.MuiButton-contained) {
+        width: 100%;
+        max-width: 320px;
+    }
+}
