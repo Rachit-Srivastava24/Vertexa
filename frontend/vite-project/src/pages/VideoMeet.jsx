@@ -10,8 +10,9 @@ import ScreenShareIcon from "@mui/icons-material/ScreenShare";
 import StopScreenShareIcon from "@mui/icons-material/StopScreenShare";
 import ChatIcon from "@mui/icons-material/Chat";
 import styles from "../Styles/videoComponent.module.css";
+import server from "../environment";
 
-const server_url = "http://localhost:3000";
+const server_url = server;
 const connections = {};
 const pendingCandidates = {};
 const pendingOffers = {};
