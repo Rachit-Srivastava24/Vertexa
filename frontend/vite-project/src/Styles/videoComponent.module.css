@@ -129,7 +129,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 18px;
-    padding: 22px;
+    padding: 75px 22px 22px;
     width: calc(100% - 420px);
     height: calc(100vh - 120px);
     box-sizing: border-box;
@@ -531,7 +531,7 @@
   .conferenceView {
     width: 100%;
     height: 58%;
-    padding: 10px;
+    padding: 65px 12px 12px;
     gap: 10px;
     box-sizing: border-box;
     display: grid;
