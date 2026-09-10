@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -8,11 +8,11 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import HomeIcon from "@mui/icons-material/Home";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Snackbar } from "@mui/material";
+import { IconButton, Snackbar } from "@mui/material";
 import { AuthContext } from "../contexts/AuthContext";
 
-// Dark theme so MUI's inputs/labels/text render correctly on a dark background
 const darkTheme = createTheme({
     palette: {
         mode: "dark",
@@ -29,6 +29,8 @@ const darkTheme = createTheme({
 });
 
 export default function Authentication() {
+
+    const routeTo = useNavigate();
 
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
@@ -93,17 +95,41 @@ export default function Authentication() {
                 component="main"
                 sx={{
                     minHeight: "100vh",
-
                     background:
                         "radial-gradient(circle at 80% 10%, rgba(168, 85, 247, 0.18) 0%, transparent 45%), radial-gradient(circle at 10% 90%, rgba(88, 28, 135, 0.20) 0%, transparent 50%), #05030e",
-
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-
                     position: "relative",
                 }}
             >
+
+                {/* HOME BUTTON */}
+
+                <IconButton
+                    onClick={() => routeTo("/")}
+                    sx={{
+                        position: "absolute",
+                        top: 25,
+                        left: 25,
+                        color: "#ffffff",
+                        background: "rgba(255,255,255,0.08)",
+                        border: "1px solid rgba(255,255,255,0.15)",
+                        borderRadius: "12px",
+                        padding: "10px",
+
+                        "&:hover": {
+                            background: "rgba(255,255,255,0.16)"
+                        },
+
+                        "& .MuiSvgIcon-root": {
+                            color: "#ffffff",
+                            fontSize: "30px"
+                        }
+                    }}
+                >
+                    <HomeIcon />
+                </IconButton>
 
                 {/* LOGIN CARD */}
 
@@ -112,19 +138,15 @@ export default function Authentication() {
                     sx={{
                         position: "relative",
                         zIndex: 1,
-
                         width: {
                             xs: "90%",
                             sm: 450,
                         },
-
                         padding: {
                             xs: 3,
                             sm: 4,
                         },
-
                         borderRadius: 4,
-
                         backgroundColor: "rgba(20, 12, 40, 0.85)",
                         backdropFilter: "blur(16px)",
                         border: "1px solid rgba(255,255,255,0.08)",
@@ -152,7 +174,6 @@ export default function Authentication() {
                         >
                             <LockOutlinedIcon />
                         </Avatar>
-
 
                         {/* SIGN IN / SIGN UP */}
 
@@ -205,7 +226,6 @@ export default function Authentication() {
 
                         </Box>
 
-
                         {/* FORM */}
 
                         <Box
@@ -234,7 +254,6 @@ export default function Authentication() {
                                 />
                             )}
 
-
                             {/* USERNAME */}
 
                             <TextField
@@ -250,7 +269,6 @@ export default function Authentication() {
                                     setUsername(e.target.value)
                                 }
                             />
-
 
                             {/* PASSWORD */}
 
@@ -268,7 +286,6 @@ export default function Authentication() {
                                 }
                             />
 
-
                             {/* ERROR */}
 
                             {error && (
@@ -282,7 +299,6 @@ export default function Authentication() {
                                     {error}
                                 </Box>
                             )}
-
 
                             {/* LOGIN / REGISTER BUTTON */}
 
@@ -312,7 +328,6 @@ export default function Authentication() {
                     </Box>
 
                 </Paper>
-
 
                 {/* SUCCESS SNACKBAR */}
 

@@ -9,6 +9,7 @@ import MicOffIcon from "@mui/icons-material/MicOff";
 import ScreenShareIcon from "@mui/icons-material/ScreenShare";
 import StopScreenShareIcon from "@mui/icons-material/StopScreenShare";
 import ChatIcon from "@mui/icons-material/Chat";
+import HomeIcon from "@mui/icons-material/Home";
 import styles from "../Styles/videoComponent.module.css";
 import server from "../environment";
 
@@ -541,6 +542,29 @@ export default function VideoMeetComponent() {
                 </div>
             ) : (
                 <div className={styles.meetVideoContainer}>
+                    <IconButton
+                        onClick={handleEndCall}
+                        sx={{
+                            position: "absolute",
+                            top: 18,
+                            left: 18,
+                            zIndex: 40,
+                            color: "#ffffff",
+                            background: "rgba(8,14,45,0.85)",
+                            border: "1px solid rgba(255,255,255,0.15)",
+                            borderRadius: "12px",
+                            padding: "9px",
+                            "&:hover": {
+                                background: "rgba(255,255,255,0.16)"
+                            },
+                            "& .MuiSvgIcon-root": {
+                                fontSize: "28px"
+                            }
+                        }}
+                    >
+                        <HomeIcon />
+                    </IconButton>
+
                     {showModal && (
                         <div className={styles.chatRoom}>
                             <div className={styles.chatContainer}>
