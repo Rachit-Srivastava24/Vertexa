@@ -146,7 +146,7 @@ export default function History() {
                                                 wordBreak: "break-word"
                                             }}
                                         >
-                                            {e.meetingCode}
+                                            {e.meetingId}
                                         </Typography>
 
                                         <Typography
