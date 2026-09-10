@@ -294,3 +294,26 @@ body {
         justify-content: center;
     }
 }
+
+@media (max-width: 480px) {
+  .landingPageContainer nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 1rem;
+  }
+
+  .landingPageContainer nav .navList {
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .landingMainContainer h2 {
+    font-size: 2rem !important;
+  }
+
+  .mobile-image {
+    width: 280px !important;
+  }
+}
