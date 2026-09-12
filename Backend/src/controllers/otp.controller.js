@@ -6,13 +6,14 @@ import User from "../models/user.models.js";
 let otpStore = {};
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
 });
-
 const sendOtp = async (req, res) => {
   const { email } = req.body;
 
