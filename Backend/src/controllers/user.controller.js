@@ -34,18 +34,26 @@ const login = async (req, res) => {
 };
 
 const register = async (req, res) => {
-  const { name, username, password } = req.body;
+  const { name, username, email, password } = req.body;
+  if (!name || !username || !email || !password) {
+  return res.status(400).json({ message: "Please provide all fields" });
+}
 
   try {
     const existingUser = await User.findOne({ username });
     if (existingUser) {
       return res.status(httpStatus.FOUND).json({ message: "Username already exists" });
     }
+     const existingEmail = await User.findOne({ email });
+  if (existingEmail) {
+    return res.status(httpStatus.FOUND).json({ message: "Email already exists" });
+  }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({
       name,
       username,
+      email,
       password: hashedPassword,
     });
 

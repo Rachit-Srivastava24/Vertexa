@@ -4,6 +4,7 @@ dotenv.config();
 import { Resend } from "resend";
 import crypto from "crypto";
 import httpStatus from "http-status";
+import bcrypt from "bcrypt";
 import User from "../models/user.models.js";
 
 let otpStore = {};
@@ -11,29 +12,52 @@ let otpStore = {};
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const sendOtp = async (req, res) => {
-  const { email } = req.body;
+  const { name, username, email, password } = req.body;
 
-  if (!email) {
-    return res.status(400).json({ message: "Email is required" });
+  if (!name || !username || !email || !password) {
+    return res.status(400).json({
+      message: "Please provide all fields",
+    });
   }
 
   try {
+    const existingUser = await User.findOne({ username });
+
+    if (existingUser) {
+      return res.status(httpStatus.FOUND).json({
+        message: "Username already exists",
+      });
+    }
+
+    const existingEmail = await User.findOne({ email });
+
+    if (existingEmail) {
+      return res.status(httpStatus.FOUND).json({
+        message: "Email already exists",
+      });
+    }
+
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
     otpStore[email] = {
       otp,
+      name,
+      username,
+      email,
+      password,
       expiresAt: Date.now() + 5 * 60 * 1000,
     };
 
-    const { data, error } = await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: "Vertexa <onboarding@resend.dev>",
       to: [email],
-      subject: "Your Vertexa OTP",
+      subject: "Your Vertexa Registration OTP",
       text: `Your OTP is ${otp}. It is valid for 5 minutes.`,
     });
 
     if (error) {
       console.error("Resend error:", error);
+
       return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
         message: "Failed to send OTP",
       });
@@ -44,6 +68,7 @@ const sendOtp = async (req, res) => {
     });
   } catch (error) {
     console.error("OTP error:", error);
+
     return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
       message: "Failed to send OTP",
     });
@@ -81,29 +106,35 @@ const verifyOtp = async (req, res) => {
     });
   }
 
-  delete otpStore[email];
-
   try {
-    let user = await User.findOne({ email });
+    const hashedPassword = await bcrypt.hash(record.password, 10);
 
-    if (!user) {
-      return res.status(httpStatus.NOT_FOUND).json({
-        message: "No account found with this email. Please register first.",
-      });
-    }
+    const newUser = new User({
+      name: record.name,
+      username: record.username,
+      email: record.email,
+      password: hashedPassword,
+    });
+
+    await newUser.save();
+
+    delete otpStore[email];
 
     const token = crypto.randomBytes(20).toString("hex");
 
-    user.token = token;
+    newUser.token = token;
 
-    await user.save();
+    await newUser.save();
 
-    return res.status(httpStatus.OK).json({ token });
+    return res.status(httpStatus.OK).json({
+      message: "Registration successful",
+      token,
+    });
   } catch (error) {
-    console.error(error);
+    console.error("Registration error:", error);
 
     return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-      message: "Something went wrong",
+      message: "Error registering user",
     });
   }
 };
