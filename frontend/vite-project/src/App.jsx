@@ -3,6 +3,7 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
 import LandingPage from './pages/Landing';
 import Authentication from './pages/Authentication';
+import GuestJoin from './pages/GuestJoin';
 import { AuthProvider } from './contexts/AuthContext';
 import VideoMeetComponent from './pages/VideoMeet';
 import HomeComponent from './pages/home';
@@ -25,7 +26,7 @@ function App() {
 
             <Route path="/history" element={<History />} />
 
-            <Route path="/meet" element={<VideoMeetComponent />} />
+            <Route path="/meet" element={<GuestJoin />} />
 
             <Route path="/:url" element={<VideoMeetComponent />} />
 

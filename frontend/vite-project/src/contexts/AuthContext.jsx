@@ -22,6 +22,37 @@ export const AuthProvider = ({ children }) => {
 
     const router = useNavigate();
 
+    const sendOtp = async (name, username, email, password) => {
+    try {
+        let request = await client.post("/send-otp", {
+            name,
+            username,
+            email,
+            password
+        });
+
+        return request.data.message;
+    } catch (err) {
+        throw err;
+    }
+}
+
+const verifyOtp = async (email, otp) => {
+    try {
+        let request = await client.post("/verify-otp", {
+            email,
+            otp
+        });
+
+        if (request.status === httpStatus.OK) {
+            localStorage.setItem("token", request.data.token);
+            return request.data.message;
+        }
+    } catch (err) {
+        throw err;
+    }
+}
+
     const handleRegister = async (name, username, password) => {
         try {
             let request = await client.post("/register", {
@@ -86,7 +117,7 @@ export const AuthProvider = ({ children }) => {
 
 
     const data = {
-        userData, setUserData, addToUserHistory, getHistoryOfUser, handleRegister, handleLogin
+        userData, setUserData, addToUserHistory, getHistoryOfUser, handleRegister, handleLogin, sendOtp, verifyOtp
     }
 
     return (

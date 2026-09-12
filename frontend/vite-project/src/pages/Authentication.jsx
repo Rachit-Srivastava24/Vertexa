@@ -37,6 +37,9 @@ export default function Authentication() {
     const [name, setName] = React.useState("");
     const [error, setError] = React.useState("");
     const [message, setMessage] = React.useState("");
+    const [email, setEmail] = React.useState("");
+const [otp, setOtp] = React.useState("");
+const [otpSent, setOtpSent] = React.useState(false);
 
     const [searchParams] = useSearchParams();
     const initialMode = searchParams.get("mode") === "register" ? 1 : 0;
@@ -44,47 +47,58 @@ export default function Authentication() {
     const [formState, setFormState] = React.useState(initialMode);
     const [open, setOpen] = React.useState(false);
 
-    const { handleRegister, handleLogin } =
+    const { handleRegister, handleLogin, sendOtp, verifyOtp } =
         React.useContext(AuthContext);
 
     const handleAuth = async () => {
-        try {
-            setError("");
+    try {
+        setError("");
 
-            if (formState === 0) {
+        if (formState === 0) {
+            await handleLogin(username, password);
+        } else {
 
-                await handleLogin(username, password);
-
-            } else {
-
-                const result = await handleRegister(
+            if (!otpSent) {
+                const result = await sendOtp(
                     name,
                     username,
+                    email,
                     password
                 );
 
-                setUsername("");
-                setPassword("");
-                setName("");
+                setMessage(result);
+                setOpen(true);
+                setOtpSent(true);
+
+            } else {
+                const result = await verifyOtp(email, otp);
+
+                localStorage.setItem("token", result);
 
                 setMessage(result);
                 setOpen(true);
 
+                setUsername("");
+                setPassword("");
+                setName("");
+                setEmail("");
+                setOtp("");
+                setOtpSent(false);
+
                 setFormState(0);
             }
-
-        } catch (err) {
-
-            console.log(err);
-
-            const errorMessage =
-                err.response?.data?.message ||
-                err.message ||
-                "Something went wrong";
-
-            setError(errorMessage);
         }
-    };
+    } catch (err) {
+        console.log(err);
+
+        const errorMessage =
+            err.response?.data?.message ||
+            err.message ||
+            "Something went wrong";
+
+        setError(errorMessage);
+    }
+};
 
     return (
         <ThemeProvider theme={darkTheme}>
@@ -254,6 +268,19 @@ export default function Authentication() {
                                 />
                             )}
 
+{formState === 1 && (
+    <TextField
+        margin="normal"
+        required
+        fullWidth
+        id="email"
+        label="Email"
+        name="email"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+    />
+)}
                             {/* USERNAME */}
 
                             <TextField
@@ -285,6 +312,19 @@ export default function Authentication() {
                                     setPassword(e.target.value)
                                 }
                             />
+
+                            {formState === 1 && otpSent && (
+    <TextField
+        margin="normal"
+        required
+        fullWidth
+        id="otp"
+        label="Enter OTP"
+        name="otp"
+        value={otp}
+        onChange={(e) => setOtp(e.target.value)}
+    />
+)}
 
                             {/* ERROR */}
 
@@ -319,8 +359,10 @@ export default function Authentication() {
                                 onClick={handleAuth}
                             >
                                 {formState === 0
-                                    ? "LOGIN"
-                                    : "REGISTER"}
+    ? "LOGIN"
+    : otpSent
+        ? "VERIFY OTP"
+        : "SEND OTP"}
                             </Button>
 
                         </Box>
