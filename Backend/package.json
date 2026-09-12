@@ -22,6 +22,7 @@
     "mongoose": "^9.9.1",
     "nodemailer": "^10.0.9",
     "nodemon": "^3.1.14",
+    "resend": "^6.28.0",
     "socket.io": "^4.8.3",
     "status": "^0.0.13"
   }
