@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import Brevo from "@getbrevo/brevo";
+import { BrevoClient } from "@getbrevo/brevo";
 import crypto from "crypto";
 import httpStatus from "http-status";
 import bcrypt from "bcrypt";
@@ -9,12 +9,9 @@ import User from "../models/user.models.js";
 
 let otpStore = {};
 
-const brevo = new Brevo.TransactionalEmailsApi();
-
-brevo.setApiKey(
-  Brevo.TransactionalEmailsApiApiKeys.apiKey,
-  process.env.BREVO_API_KEY
-);
+const brevo = new BrevoClient({
+  apiKey: process.env.BREVO_API_KEY,
+});
 
 const sendOtp = async (req, res) => {
   const { name, username, email, password } = req.body;
@@ -53,21 +50,19 @@ const sendOtp = async (req, res) => {
       expiresAt: Date.now() + 5 * 60 * 1000,
     };
 
-    const sendSmtpEmail = new Brevo.SendSmtpEmail();
-
-    sendSmtpEmail.subject = "Your Vertexa Registration OTP";
-    sendSmtpEmail.textContent = `Your OTP is ${otp}. It is valid for 5 minutes.`;
-    sendSmtpEmail.sender = {
-      name: "Vertexa",
-      email: process.env.EMAIL_USER,
-    };
-    sendSmtpEmail.to = [
-      {
-        email: email,
+    await brevo.transactionalEmails.sendTransacEmail({
+      subject: "Your Vertexa Registration OTP",
+      textContent: `Your OTP is ${otp}. It is valid for 5 minutes.`,
+      sender: {
+        name: "Vertexa",
+        email: process.env.EMAIL_USER,
       },
-    ];
-
-    await brevo.sendTransacEmail(sendSmtpEmail);
+      to: [
+        {
+          email: email,
+        },
+      ],
+    });
 
     return res.status(httpStatus.OK).json({
       message: "OTP sent successfully",
