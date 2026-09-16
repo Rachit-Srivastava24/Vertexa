@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import { Resend } from "resend";
+import Brevo from "@getbrevo/brevo";
 import crypto from "crypto";
 import httpStatus from "http-status";
 import bcrypt from "bcrypt";
@@ -9,7 +9,12 @@ import User from "../models/user.models.js";
 
 let otpStore = {};
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const brevo = new Brevo.TransactionalEmailsApi();
+
+brevo.setApiKey(
+  Brevo.TransactionalEmailsApiApiKeys.apiKey,
+  process.env.BREVO_API_KEY
+);
 
 const sendOtp = async (req, res) => {
   const { name, username, email, password } = req.body;
@@ -48,20 +53,21 @@ const sendOtp = async (req, res) => {
       expiresAt: Date.now() + 5 * 60 * 1000,
     };
 
-    const { error } = await resend.emails.send({
-      from: "Vertexa <onboarding@resend.dev>",
-      to: [email],
-      subject: "Your Vertexa Registration OTP",
-      text: `Your OTP is ${otp}. It is valid for 5 minutes.`,
-    });
+    const sendSmtpEmail = new Brevo.SendSmtpEmail();
 
-    if (error) {
-      console.error("Resend error:", error);
+    sendSmtpEmail.subject = "Your Vertexa Registration OTP";
+    sendSmtpEmail.textContent = `Your OTP is ${otp}. It is valid for 5 minutes.`;
+    sendSmtpEmail.sender = {
+      name: "Vertexa",
+      email: process.env.EMAIL_USER,
+    };
+    sendSmtpEmail.to = [
+      {
+        email: email,
+      },
+    ];
 
-      return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-        message: "Failed to send OTP",
-      });
-    }
+    await brevo.sendTransacEmail(sendSmtpEmail);
 
     return res.status(httpStatus.OK).json({
       message: "OTP sent successfully",
